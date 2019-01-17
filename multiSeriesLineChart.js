@@ -62,6 +62,12 @@ var xAxis = config.xAxis;
     //.orient("bottom")
     //.tickFormat(formatyear);
 
+//  Could I instead set the range, as suggested by this site? https://www.sitepoint.com/creating-simple-line-bar-charts-using-d3-js/
+// xRange = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([d3.min(2012, function(d) {
+//      return d.x;
+//    }), d3.max(2019, function(d) {
+//      return d.x;
+//      })]),
 
   var yAxis = config.yAxis;
   var colorRange = config.colorRange;
