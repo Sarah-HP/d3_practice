@@ -1,3 +1,6 @@
+
+// Source of script: http://bl.ocks.org/ChandrakantThakkarDigiCorp/be18bb176b5050b55a32c05060bad11e
+
 function multiSeriesLineChart(config) {
   function setReSizeEvent(data) {
     var resizeTimer;
@@ -21,7 +24,7 @@ function multiSeriesLineChart(config) {
 }
 
 function createmultiSeriesLineChartLegend(mainDiv, columnsInfo, colorRange) {
-  var z = d3.scaleOrdinal()
+  var z = d3.scaleOrdinal() // Could I instead change the scale here?
     .range(colorRange);
   var mainDivName = mainDiv.substr(1, mainDiv.length);
   $(mainDiv).before("<div id='Legend_" + mainDivName + "' class='pmd-card-body' style='margin-top:0; margin-bottom:0;'></div>");
@@ -45,7 +48,21 @@ function drawmultiSeriesLineChartCharts(config) {
   config.data.splice(0, 0, tempObj);
   var data = config.data;
   var columnsInfo = config.columnsInfo;
-  var xAxis = config.xAxis;
+
+var xAxis = config.xAxis;
+
+// Trying to define a new variable for the x axis
+// If this doesn't work, replace with var xAxis = config.xAxis;
+    //var years = ["2013", "2014", "2015", "2016", "2017", "2018"];
+    //var xScaleLabels = function(d) {
+    //  return years
+    //}
+    //var xAxis = d3.svg.axis()
+    //#.scale(x)
+    //.orient("bottom")
+    //.tickFormat(formatyear);
+
+
   var yAxis = config.yAxis;
   var colorRange = config.colorRange;
   var mainDiv = config.mainDiv;
@@ -64,7 +81,8 @@ function drawmultiSeriesLineChartCharts(config) {
     $("#Legend_" + mainDivName).remove();
     createmultiSeriesLineChartLegend(mainDiv, columnsInfo, colorRange);
   }
-  var x = d3.scaleLinear().range([0, width]),
+
+  var x = d3.scaleLinear().range([0, width]), // If I change this range 0 to 2000, then the x axis shifts right
     y = d3.scaleLinear().range([height, 0]),
     z = d3.scaleOrdinal()
       .range(colorRange);
@@ -91,6 +109,7 @@ function drawmultiSeriesLineChartCharts(config) {
     };
   });
 
+
   x.domain(d3.extent(data, function (d) {
     return d[xAxis];
   }));
@@ -112,7 +131,7 @@ function drawmultiSeriesLineChartCharts(config) {
 
   g.append("g")
     .attr("class", "axis axis--x")
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", "translate(0," + height + ")") // If I change this 0 to 2000, the axis label becomes invisible
     .call(d3.axisBottom(x))
     .append("text")
     .attr("x", width / 2)
@@ -184,8 +203,8 @@ function drawmultiSeriesLineChartCharts(config) {
     })
     .attr("data", function (d) {
       var data = {};
-      data["over"] = d.over;
-      data["runs"] = d.value;
+      data["Year"] = d.over;
+      data["Percent Supporting"] = d.value;
       return JSON.stringify(data);
     })
     .attr("stroke-width", "2px")

@@ -17,8 +17,10 @@
     </div>
     <script>
 
-    var groupChartData = [{ "2614": 8, "4449": 15, "Year": 2013 }, { "2614": 15, "4449": 17, "Year": 2014 }, { "2614": 19, "4449": 22, "Year": 2015 }, { "2614": 38, "4449": 30, "Year": 2016 }, { "2614": 41, "4449": 37, "Year": 2017 }, { "2614": 47, "4449": 38, "Year": 2018 }];
+// Manually entered the data on democratic support for charter schools and voucher schools
+    var groupChartData = [{ "2614": 44, "4449": 0, "Year": 2013 }, { "2614": 47, "4449": 0, "Year": 2014 }, { "2614": 42, "4449": 47, "Year": 2015 }, { "2614": 45, "4449": 42, "Year": 2016 }, { "2614": 34, "4449": 44, "Year": 2017 }, { "2614": 36, "4449": 47, "Year": 2018 }];
 
+// New labels into the legend
     var columnsInfo = { "2614": "Support for Charters", "4449": "Support for Vouchers" };
 
     $("#chart").empty();
@@ -28,10 +30,10 @@
         data: groupChartData,
         columnsInfo: columnsInfo,
         xAxis: "Year",
-        yAxis: "runs",
+        yAxis: "Percent Supporting",
         label: {
             xAxis: "Year",
-            yAxis: "Runs"
+            yAxis: "Percent Supporting"
         },
         requireCircle: false,
         requireLegend: true
