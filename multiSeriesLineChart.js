@@ -188,7 +188,7 @@ var xAxis = config.xAxis;
   var circles = element.selectAll("circle")
     .data(function (d) {
       return keys.map(function (key) {
-        return { key: key, value: d[key], over: d.over };
+        return { key: key, value: d[key], Year: d.Year };
       });
     })
     .enter().append("circle")
@@ -209,7 +209,8 @@ var xAxis = config.xAxis;
     })
     .attr("data", function (d) {
       var data = {};
-      data["Year"] = d.over;
+      data["Year"] = d.Year;
+      console.log(d)
       data["Percent Supporting"] = d.value;
       return JSON.stringify(data);
     })
@@ -253,12 +254,13 @@ var xAxis = config.xAxis;
     });
     //CBT:calculate tooltips text
     var tooltipData = JSON.parse(currentEl.attr("data"));
+    console.log('DATA',tooltipData);
     var tooltipsText = "";
     d3.selectAll("#circletooltipText_" + mainDivName).text("");
     var yPos = 0;
-    d3.selectAll("#circletooltipText_" + mainDivName).append("tspan").attr("x", 0).attr("y", yPos * 10).attr("dy", "1.9em").text(label.xAxis + ":  " + tooltipData.over);
+    d3.selectAll("#circletooltipText_" + mainDivName).append("tspan").attr("x", 0).attr("y", yPos * 10).attr("dy", "1.9em").text(label.xAxis + ":  " + tooltipData['Year']);
     yPos = yPos + 1;
-    d3.selectAll("#circletooltipText_" + mainDivName).append("tspan").attr("x", 0).attr("y", yPos * 10).attr("dy", "1.9em").text(label.yAxis + ":  " + tooltipData.runs);
+    d3.selectAll("#circletooltipText_" + mainDivName).append("tspan").attr("x", 0).attr("y", yPos * 10).attr("dy", "1.9em").text(label.yAxis + ":  " + tooltipData['Percent Supporting']);
     //CBT:calculate width of the text based on characters
     var dims = helpers.getDimensions("circletooltipText_" + mainDivName);
     d3.selectAll("#circletooltipText_" + mainDivName + " tspan")
@@ -343,7 +345,33 @@ var xAxis = config.xAxis;
       return "";
     });
 
+
+
 }
+
+// Moved from the .html part
+// Manually entered the data on democratic support for charter schools and voucher schools
+    var groupChartData = [{ "2614": 44, "4449": [], "Year": 2013 }, { "2614": 47, "4449": [], "Year": 2014 }, { "2614": 42, "4449": 47, "Year": 2015 }, { "2614": 45, "4449": 42, "Year": 2016 }, { "2614": 34, "4449": 44, "Year": 2017 }, { "2614": 36, "4449": 47, "Year": 2018 }];
+
+// New labels into the legend
+    var columnsInfo = { "2614": "Support for Charters", "4449": "Support for Vouchers" };
+
+    $("#chart").empty();
+    var muliSeriesChartConfig = {
+        mainDiv: "#chart",
+        colorRange: ["#2a98cd", "#df7247"],
+        data: groupChartData,
+        columnsInfo: columnsInfo,
+        xAxis: "Year",
+        yAxis: "Percent Supporting",
+        label: {
+            xAxis: "Year",
+            yAxis: "Percent Supporting"
+        },
+        requireCircle: false,
+        requireLegend: true
+    };
+    var muliSeriesChart = new multiSeriesLineChart(muliSeriesChartConfig);
 
 var helpers = {
   getDimensions: function (id) {
@@ -359,3 +387,8 @@ var helpers = {
     return { w: w, h: h };
   }
 };
+
+window.addEventListener('resize', function (event) {
+    $("#chart").width(window.innerWidth * 0.9);
+    $("#chart").height(window.innerHeight);
+});

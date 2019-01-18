@@ -12,34 +12,8 @@
     </script>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <div id="chart" style="width: 800;height: 500"></div>
     <script src="multiSeriesLineChart.js"></script>
-    <div id="chart" style="width: 800;height: 500">
-    </div>
-    <script>
-
-// Manually entered the data on democratic support for charter schools and voucher schools
-    var groupChartData = [{ "2614": 44, "4449": 0, "Year": 0 }, { "2614": 47, "4449": 0, "Year": 1 }, { "2614": 42, "4449": 47, "Year": 2 }, { "2614": 45, "4449": 42, "Year": 3 }, { "2614": 34, "4449": 44, "Year": 4 }, { "2614": 36, "4449": 47, "Year": 5 }];
-
-// New labels into the legend
-    var columnsInfo = { "2614": "Support for Charters", "4449": "Support for Vouchers" };
-
-    $("#chart").empty();
-    var muliSeriesChartConfig = {
-        mainDiv: "#chart",
-        colorRange: ["#2a98cd", "#df7247"],
-        data: groupChartData,
-        columnsInfo: columnsInfo,
-        xAxis: "Year",
-        yAxis: "Percent Supporting",
-        label: {
-            xAxis: "Year",
-            yAxis: "Percent Supporting"
-        },
-        requireCircle: false,
-        requireLegend: true
-    };
-    var muliSeriesChart = new multiSeriesLineChart(muliSeriesChartConfig);
-</script>
 </body>
 
 </html>
