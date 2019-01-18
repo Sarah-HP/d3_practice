@@ -372,7 +372,7 @@ var xAxis = config.xAxis;
 
 // Moved from the .html part
 // Manually entered the data on democratic support for charter schools and voucher schools
-    var groupChartData = [{ "2614": 44, "4449": [], "Year": 2013 }, { "2614": 47, "4449": [], "Year": 2014 }, { "2614": 42, "4449": 47, "Year": 2015 }, { "2614": 45, "4449": 42, "Year": 2016 }, { "2614": 34, "4449": 44, "Year": 2017 }, { "2614": 36, "4449": 47, "Year": 2018 }];
+    var groupChartData = [{ "2614": 42, "4449": 47, "Year": 2015 }, { "2614": 45, "4449": 42, "Year": 2016 }, { "2614": 34, "4449": 44, "Year": 2017 }, { "2614": 36, "4449": 47, "Year": 2018 }];
 
 // New labels into the legend
     var columnsInfo = { "2614": "Support for Charters", "4449": "Support for Vouchers" };
