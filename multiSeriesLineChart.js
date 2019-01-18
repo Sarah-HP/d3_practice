@@ -141,7 +141,11 @@ var xAxis = config.xAxis;
   }));
   y.domain([
     0,
-    100
+    d3.max(groupData, function (c) {
+      return d3.max(c.values, function (d) {
+        return d[yAxis];
+      });
+    })
   ]);
   z.domain(groupData.map(function (c) {
     return c.id;
@@ -335,7 +339,7 @@ var xAxis = config.xAxis;
   circleTooltipg.append("rect")
     .attr("id", "circletooltipRect_" + mainDivName)
     .attr("x", 0)
-    .attr("width", 120)
+    .attr("width", 0) // Change the opaque box to be 0 in width
     .attr("height", 80)
     .attr("opacity", 0.71)
     .style("fill", "#000000");
@@ -345,6 +349,7 @@ var xAxis = config.xAxis;
     .attr("id", "circletooltipText_" + mainDivName)
     .attr("x", 30)
     .attr("y", 15)
+    .style('fill', 'darkOrange')
     .attr("fill", function () {
       return "#fff"
     })
