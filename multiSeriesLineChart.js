@@ -1,6 +1,7 @@
 
 // Source of script: http://bl.ocks.org/ChandrakantThakkarDigiCorp/be18bb176b5050b55a32c05060bad11e
 
+
 function multiSeriesLineChart(config) {
   function setReSizeEvent(data) {
     var resizeTimer;
@@ -116,8 +117,27 @@ var xAxis = config.xAxis;
   });
 
 
+// Using this website: https://stackoverflow.com/questions/16919280/how-to-update-axis-using-d3-js
+// I will define a variable called "x" that holds the axis range I want for the x-axis
+/// putting this in comments because it did not work
+/////x = d3.scale.linear().domain([2013,2018]).range([margin,width-margin]),
+/////x.domain(d3.extent(x, function (d) {
+/////return d[xAxis];
+
+//This also does not work:   x.domain(d3.extent([2013,2018], function (d) {
+//This also doesn't work:   x.domain(d3.extent(['Year'], function (d) {
+
+// What if I just set the whole domain manually?
+////Nope: 
+//  x.domain([2013,2018])
+//    return d[xAxis]
+
+//What if I do this?
+///Nope.
+//  x.domain(d3.scaleLinear().domain([2013, 2018]).range([0, 960]))
+
   x.domain(d3.extent(data, function (d) {
-    return d[xAxis];
+  return d[xAxis];
   }));
   y.domain([
     d3.min(groupData, function (c) {
@@ -137,6 +157,7 @@ var xAxis = config.xAxis;
 
   g.append("g")
     .attr("class", "axis axis--x")
+    .attr("class", "title")
     .attr("transform", "translate(0," + height + ")") // If I change this 0 to 2000, the axis label becomes invisible
     .call(d3.axisBottom(x))
     .append("text")
