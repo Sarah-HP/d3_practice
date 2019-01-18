@@ -1,6 +1,7 @@
 
 // Source of script: http://bl.ocks.org/ChandrakantThakkarDigiCorp/be18bb176b5050b55a32c05060bad11e
 
+
 function multiSeriesLineChart(config) {
   function setReSizeEvent(data) {
     var resizeTimer;
@@ -116,8 +117,27 @@ var xAxis = config.xAxis;
   });
 
 
+// Using this website: https://stackoverflow.com/questions/16919280/how-to-update-axis-using-d3-js
+// I will define a variable called "x" that holds the axis range I want for the x-axis
+/// putting this in comments because it did not work
+/////x = d3.scale.linear().domain([2013,2018]).range([margin,width-margin]),
+/////x.domain(d3.extent(x, function (d) {
+/////return d[xAxis];
+
+//This also does not work:   x.domain(d3.extent([2013,2018], function (d) {
+//This also doesn't work:   x.domain(d3.extent(['Year'], function (d) {
+
+// What if I just set the whole domain manually?
+////Nope: 
+//  x.domain([2013,2018])
+//    return d[xAxis]
+
+//What if I do this?
+///Nope.
+//  x.domain(d3.scaleLinear().domain([2013, 2018]).range([0, 960]))
+
   x.domain(d3.extent(data, function (d) {
-    return d[xAxis];
+  return d[xAxis];
   }));
   y.domain([
     d3.min(groupData, function (c) {
@@ -137,6 +157,7 @@ var xAxis = config.xAxis;
 
   g.append("g")
     .attr("class", "axis axis--x")
+    .attr("class", "title")
     .attr("transform", "translate(0," + height + ")") // If I change this 0 to 2000, the axis label becomes invisible
     .call(d3.axisBottom(x))
     .append("text")
@@ -188,7 +209,7 @@ var xAxis = config.xAxis;
   var circles = element.selectAll("circle")
     .data(function (d) {
       return keys.map(function (key) {
-        return { key: key, value: d[key], over: d.over };
+        return { key: key, value: d[key], Year: d.Year };
       });
     })
     .enter().append("circle")
@@ -209,7 +230,8 @@ var xAxis = config.xAxis;
     })
     .attr("data", function (d) {
       var data = {};
-      data["Year"] = d.over;
+      data["Year"] = d.Year;
+      console.log(d)
       data["Percent Supporting"] = d.value;
       return JSON.stringify(data);
     })
@@ -253,12 +275,13 @@ var xAxis = config.xAxis;
     });
     //CBT:calculate tooltips text
     var tooltipData = JSON.parse(currentEl.attr("data"));
+    console.log('DATA',tooltipData);
     var tooltipsText = "";
     d3.selectAll("#circletooltipText_" + mainDivName).text("");
     var yPos = 0;
-    d3.selectAll("#circletooltipText_" + mainDivName).append("tspan").attr("x", 0).attr("y", yPos * 10).attr("dy", "1.9em").text(label.xAxis + ":  " + tooltipData.over);
+    d3.selectAll("#circletooltipText_" + mainDivName).append("tspan").attr("x", 0).attr("y", yPos * 10).attr("dy", "1.9em").text(label.xAxis + ":  " + tooltipData['Year']);
     yPos = yPos + 1;
-    d3.selectAll("#circletooltipText_" + mainDivName).append("tspan").attr("x", 0).attr("y", yPos * 10).attr("dy", "1.9em").text(label.yAxis + ":  " + tooltipData.runs);
+    d3.selectAll("#circletooltipText_" + mainDivName).append("tspan").attr("x", 0).attr("y", yPos * 10).attr("dy", "1.9em").text(label.yAxis + ":  " + tooltipData['Percent Supporting']);
     //CBT:calculate width of the text based on characters
     var dims = helpers.getDimensions("circletooltipText_" + mainDivName);
     d3.selectAll("#circletooltipText_" + mainDivName + " tspan")
@@ -343,7 +366,33 @@ var xAxis = config.xAxis;
       return "";
     });
 
+
+
 }
+
+// Moved from the .html part
+// Manually entered the data on democratic support for charter schools and voucher schools
+    var groupChartData = [{ "2614": 42, "4449": 47, "Year": 2015 }, { "2614": 45, "4449": 42, "Year": 2016 }, { "2614": 34, "4449": 44, "Year": 2017 }, { "2614": 36, "4449": 47, "Year": 2018 }];
+
+// New labels into the legend
+    var columnsInfo = { "2614": "Support for Charters", "4449": "Support for Vouchers" };
+
+    $("#chart").empty();
+    var muliSeriesChartConfig = {
+        mainDiv: "#chart",
+        colorRange: ["#2a98cd", "#df7247"],
+        data: groupChartData,
+        columnsInfo: columnsInfo,
+        xAxis: "Year",
+        yAxis: "Percent Supporting",
+        label: {
+            xAxis: "Year",
+            yAxis: "Percent Supporting"
+        },
+        requireCircle: false,
+        requireLegend: true
+    };
+    var muliSeriesChart = new multiSeriesLineChart(muliSeriesChartConfig);
 
 var helpers = {
   getDimensions: function (id) {
@@ -359,3 +408,8 @@ var helpers = {
     return { w: w, h: h };
   }
 };
+
+window.addEventListener('resize', function (event) {
+    $("#chart").width(window.innerWidth * 0.9);
+    $("#chart").height(window.innerHeight);
+});
